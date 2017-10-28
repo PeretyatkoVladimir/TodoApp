@@ -24,7 +24,7 @@ public class RunServer {
 
         MainService mainService = new MainServiceImpl(new TodoDaoImp());
 
-        Server server = new Server(8080);
+        Server server = new Server(5000);
         server.setRequestLog(new RequestLog() {
             @Override
             public void log(Request request, Response response) {
