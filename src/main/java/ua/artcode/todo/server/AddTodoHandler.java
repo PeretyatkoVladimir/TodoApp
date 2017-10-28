@@ -36,6 +36,7 @@ public class AddTodoHandler extends AbstractHandler {
         response.setStatus(HttpServletResponse.SC_CREATED);
 
         Todo todo = gson.fromJson(new InputStreamReader(request.getInputStream()),Todo.class);
+
         Todo ret = mainService.create(todo);
 
         PrintWriter out = response.getWriter();

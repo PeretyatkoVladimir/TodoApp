@@ -52,11 +52,11 @@ public class RunServer {
         contextHandler1.setAllowNullPathInfo(true);
 
         ContextHandler contextHandler2 = new ContextHandler();
-        contextHandler1.setContextPath("/hello");
-        contextHandler1.setHandler(new HelloHandler());
-        contextHandler1.setAllowNullPathInfo(true);
+        contextHandler2.setContextPath("/hello");
+        contextHandler2.setHandler(new HelloHandler());
+        contextHandler2.setAllowNullPathInfo(true);
 
-        handlers.setHandlers(new Handler[]{resource_handler, contextHandler1});
+        handlers.setHandlers(new Handler[]{resource_handler, contextHandler1, contextHandler2});
 
 
         server.setHandler(handlers);
