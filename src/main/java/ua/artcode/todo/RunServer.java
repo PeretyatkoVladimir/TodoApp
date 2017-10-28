@@ -8,9 +8,12 @@ import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.handler.ResourceHandler;
 import ua.artcode.todo.dao.TodoDaoImp;
 import ua.artcode.todo.server.AddTodoHandler;
+import ua.artcode.todo.server.HelloHandler;
 import ua.artcode.todo.service.MainService;
 import ua.artcode.todo.service.MainServiceImpl;
 import ua.artcode.todo.utils.JsonUtils;
+
+import java.io.File;
 
 /**
  * Created by serhii on 22.10.17.
@@ -37,12 +40,19 @@ public class RunServer {
         ResourceHandler resource_handler = new ResourceHandler();
         resource_handler.setDirectoriesListed(true);
         resource_handler.setWelcomeFiles(new String[]{ "todo.html" });
-        resource_handler.setResourceBase("/home/serhii/dev/projects/TodoApp/src/main/resources/view");
+
+        File resourceBase = new File(RunServer.class.getResource("/view").getFile());
+        resource_handler.setResourceBase(resourceBase.getAbsolutePath());
 
 
         ContextHandler contextHandler1 = new ContextHandler();
         contextHandler1.setContextPath("/add-todo");
         contextHandler1.setHandler(new AddTodoHandler(mainService));
+        contextHandler1.setAllowNullPathInfo(true);
+
+        ContextHandler contextHandler2 = new ContextHandler();
+        contextHandler1.setContextPath("/hello");
+        contextHandler1.setHandler(new HelloHandler());
         contextHandler1.setAllowNullPathInfo(true);
 
         handlers.setHandlers(new Handler[]{resource_handler, contextHandler1});

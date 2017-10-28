@@ -28,6 +28,12 @@ dependencies {
 
 }
 
+sourceSets {
+    main {
+        output.resourcesDir = "build/classes/main"
+    }
+}
+
 task stage {
   dependsOn installDist
 }
