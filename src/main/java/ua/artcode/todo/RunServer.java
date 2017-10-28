@@ -24,13 +24,7 @@ public class RunServer {
 
         MainService mainService = new MainServiceImpl(new TodoDaoImp());
 
-        String SERVER_PORT = System.getProperty("server.port");
-        System.out.println("SERVERPORT");
-        System.out.println(SERVER_PORT);
-        System.out.println("PORT");
-        System.out.println(System.getProperty("PORT"));
-        System.out.println("ENVPORT");
-        System.out.printf(System.getenv("PORT"));
+        String SERVER_PORT = System.getenv("PORT");
         Server server = new Server(Integer.parseInt(SERVER_PORT));
         server.setRequestLog(new RequestLog() {
             @Override
