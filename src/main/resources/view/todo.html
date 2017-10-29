@@ -131,7 +131,7 @@ input {
 <div id="myDIV" class="header">
     <h2 style="margin:5px">My To Do List</h2>
     <input type="text" id="myInput" placeholder="Title...">
-    <span onclick="newElement()" class="addBtn">Add</span>
+    <span id="addButtonId" class="addBtn">Add</span>
 </div>
 
 <ul id="myUL">
@@ -144,89 +144,96 @@ input {
 </ul>
 
 <script>
-// Create a "close" button and append it to each list item
-var myNodelist = document.getElementsByTagName("LI");
-var i;
-for (i = 0; i < myNodelist.length; i++) {
-  var span = document.createElement("SPAN");
-  var txt = document.createTextNode("\u00D7");
-  span.className = "close";
-  span.appendChild(txt);
-  myNodelist[i].appendChild(span);
-}
 
-// Click on a close button to hide the current list item
-var close = document.getElementsByClassName("close");
-var i;
-for (i = 0; i < close.length; i++) {
-  close[i].onclick = function() {
-    var div = this.parentElement;
-    div.style.display = "none";
-  }
-}
 
-// Add a "checked" symbol when clicking on a list item
-var list = document.querySelector('ul');
-list.addEventListener('click', function(ev) {
-  if (ev.target.tagName === 'LI') {
-    ev.target.classList.toggle('checked');
-  }
-}, false);
+$(document).ready(function(){
 
-// Create a new list item when clicking on the "Add" button
-function newElement() {
-  var li = document.createElement("li");
-  var inputValue = document.getElementById("myInput").value;
-  var t = document.createTextNode(inputValue);
-  li.appendChild(t);
-  if (inputValue === '') {
-    alert("You must write something!");
-  } else {
-    addTodoAjax(inputValue);
-    document.getElementById("myUL").appendChild(li);
-  }
-  document.getElementById("myInput").value = "";
-
-  var span = document.createElement("SPAN");
-  var txt = document.createTextNode("\u00D7");
-  span.className = "close";
-  span.appendChild(txt);
-  li.appendChild(span);
-
-  for (i = 0; i < close.length; i++) {
-    close[i].onclick = function() {
-      var div = this.parentElement;
-      div.style.display = "none";
+  function addCloseButtonToListElements(){
+    var myNodelist = $("LI");
+    for (var i = 0; i < myNodelist.length; i++) {
+      var span = document.createElement("SPAN");
+      var txt = document.createTextNode("\u00D7");
+      span.className = "close";
+      span.appendChild(txt);
+      myNodelist[i].appendChild(span);
     }
   }
-}
 
-function addTodoAjax(body){
-  // var xhr = new XMLHttpRequest();
-  //
-  // xhr.open('POST', '/add-todo');
-  // xhr.setRequestHeader('Content-Type', 'application/json');
-  // xhr.onloadend = function(resp) {
-  //     if (resp.target.status === 201) {
-  //         alert('You got the response ' + resp.target.responseText);
-  //     }
-  // };
-  // xhr.send(JSON.stringify({body: body}));
+  function addListenerToAllCloseButton(close){
+    for (var i = 0; i < close.length; i++) {
+      addListenerToOneCloseButton(close[i]);
+    }
+  }
 
-  $.ajax('/add-todo', {
-      method: 'POST',
-      data: JSON.stringify({body: body})
-  })
-  .then(function success(data) {
-          if (data) {
-              alert('Resp ' + data.id);
-          }
-      },function fail(data, status) {
-          alert('Request failed.  Returned status of ' + status);
-      }
-  );
+// todo fix
+  function addListenerToOneCloseButton(el){
+    $(el).click(function(event) {
+      var div = $(event.target).parent().hide();
+    })
+  }
 
-}
+  function addCheckedEventToList(){
+    var list = $('ul');
+    list.children().each(function(index) {
+      $(this).click( function(event){
+        if (event.target.tagName === 'LI') {
+          event.target.classList.toggle('checked');
+        }
+      });
+
+    });
+  }
+
+  function newElement() {
+    var inputValue = $("#myInput").val();
+
+    if (inputValue === '') {
+      alert("You must write something!");
+      return;
+    }
+
+    addTodoAjax(inputValue);
+
+  }
+
+  function createNewElement(inputValue){
+    var li = $("<li></li>").text(inputValue);
+    $("myUL").append(li);
+
+    li.append($("<SPAN></SPAN>").text("\u00D7").addClass("close"));
+    addListenerToOneCloseButton(li);
+    $("#myInput").val("");
+  }
+
+  function addTodoAjax(body){
+
+    $.ajax('/add-todo', {
+        method: 'POST',
+        data: JSON.stringify({body: body})
+    })
+    .then(function success(data) {
+            if (data) {
+                console.log('Todo has been added with id ' + data.id);
+                createNewElement(data.body);
+            }
+        },function fail(data, status) {
+            console.log('Request failed.  Returned status of ' + status);
+        }
+    );
+  }
+
+  $("#addButtonId").click(newElement);
+
+  addCloseButtonToListElements();
+  var close = document.getElementsByClassName("close");
+  addListenerToAllCloseButton(close);
+
+  addCheckedEventToList();
+
+});
+// Create a "close" button and append it to each list item
+
+
 
 </script>
 
