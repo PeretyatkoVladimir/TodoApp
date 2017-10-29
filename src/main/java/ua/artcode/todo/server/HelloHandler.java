@@ -17,7 +17,7 @@ public class HelloHandler extends AbstractHandler {
     @Override
     public void handle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         PrintWriter writer = response.getWriter();
-        writer.println("Hello");
+        writer.println("Hallo");
         writer.flush();
     }
 }
