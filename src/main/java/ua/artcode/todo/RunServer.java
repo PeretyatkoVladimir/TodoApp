@@ -25,6 +25,11 @@ public class RunServer {
         MainService mainService = new MainServiceImpl(new TodoDaoImp());
 
         String SERVER_PORT = System.getenv("PORT");
+
+        if(SERVER_PORT == null){
+            SERVER_PORT = "5000";
+        }
+
         Server server = new Server(Integer.parseInt(SERVER_PORT));
         server.setRequestLog(new RequestLog() {
             @Override
