@@ -35,5 +35,6 @@ sourceSets {
 }
 
 task stage {
+  dependsOn test
   dependsOn installDist
 }
