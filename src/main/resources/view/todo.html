@@ -151,11 +151,7 @@ $(document).ready(function(){
   function addCloseButtonToListElements(){
     var myNodelist = $("LI");
     for (var i = 0; i < myNodelist.length; i++) {
-      var span = document.createElement("SPAN");
-      var txt = document.createTextNode("\u00D7");
-      span.className = "close";
-      span.appendChild(txt);
-      myNodelist[i].appendChild(span);
+      myNodelist.append($("<SPAN></SPAN>").text("\u00D7").addClass("close"));
     }
   }
 
@@ -198,7 +194,7 @@ $(document).ready(function(){
 
   function createNewElement(inputValue){
     var li = $("<li></li>").text(inputValue);
-    $("myUL").append(li);
+    $("#myUL").append(li);
 
     li.append($("<SPAN></SPAN>").text("\u00D7").addClass("close"));
     addListenerToOneCloseButton(li);
@@ -225,7 +221,7 @@ $(document).ready(function(){
   $("#addButtonId").click(newElement);
 
   addCloseButtonToListElements();
-  var close = document.getElementsByClassName("close");
+  var close = $(".close");
   addListenerToAllCloseButton(close);
 
   addCheckedEventToList();

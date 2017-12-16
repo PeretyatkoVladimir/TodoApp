@@ -1,7 +1,6 @@
 package ua.artcode.todo.server;
 
 import com.google.gson.Gson;
-import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
 import ua.artcode.todo.model.Todo;
@@ -22,9 +21,9 @@ public class AddTodoHandler extends AbstractHandler {
     private MainService mainService;
     private Gson gson;
 
-    public AddTodoHandler(MainService mainService) {
+    public AddTodoHandler(MainService mainService, Gson gson) {
         this.mainService = mainService;
-        this.gson = new Gson();
+        this.gson = gson;
     }
 
     @Override

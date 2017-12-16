@@ -1,6 +1,6 @@
 package ua.artcode.todo;
 
-import com.mashape.unirest.http.Unirest;
+import com.google.gson.Gson;
 import org.eclipse.jetty.server.*;
 import org.eclipse.jetty.server.handler.ContextHandler;
 import org.eclipse.jetty.server.handler.ErrorHandler;
@@ -11,7 +11,6 @@ import ua.artcode.todo.server.AddTodoHandler;
 import ua.artcode.todo.server.HelloHandler;
 import ua.artcode.todo.service.MainService;
 import ua.artcode.todo.service.MainServiceImpl;
-import ua.artcode.todo.utils.JsonUtils;
 
 import java.io.File;
 
@@ -22,21 +21,18 @@ public class RunServer {
 
     public static void main(String[] args) throws Exception {
 
+        Gson gson = new Gson();
         MainService mainService = new MainServiceImpl(new TodoDaoImp());
 
         String SERVER_PORT = System.getenv("PORT");
-
         if(SERVER_PORT == null){
             SERVER_PORT = "5000";
         }
 
         Server server = new Server(Integer.parseInt(SERVER_PORT));
-        server.setRequestLog(new RequestLog() {
-            @Override
-            public void log(Request request, Response response) {
-                System.out.println(request.toString() + "\n" + response);
-            }
-        });
+        server.setRequestLog(
+                (request, response) ->
+                        System.out.println(request.toString() + "\n" + response));
 
 
         server.setErrorHandler(new ErrorHandler());
@@ -45,7 +41,7 @@ public class RunServer {
 
         ResourceHandler resource_handler = new ResourceHandler();
         resource_handler.setDirectoriesListed(true);
-        resource_handler.setWelcomeFiles(new String[]{ "todo.html" });
+        resource_handler.setWelcomeFiles(new String[]{ "/todo.html" });
 
         File resourceBase = new File(RunServer.class.getResource("/view").getFile());
         resource_handler.setResourceBase(resourceBase.getAbsolutePath());
@@ -53,7 +49,7 @@ public class RunServer {
 
         ContextHandler contextHandler1 = new ContextHandler();
         contextHandler1.setContextPath("/add-todo");
-        contextHandler1.setHandler(new AddTodoHandler(mainService));
+        contextHandler1.setHandler(new AddTodoHandler(mainService, gson));
         contextHandler1.setAllowNullPathInfo(true);
 
         ContextHandler contextHandler2 = new ContextHandler();
