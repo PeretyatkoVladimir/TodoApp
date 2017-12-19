@@ -10,4 +10,6 @@ public interface TodoDao {
     List<Todo> all();
 
     Todo find(int id);
+
+    boolean remove(int id);
 }

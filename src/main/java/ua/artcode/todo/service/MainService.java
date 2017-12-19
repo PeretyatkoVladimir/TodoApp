@@ -18,4 +18,6 @@ public interface MainService {
 
     Todo find(int id);
 
+    boolean remove(int id);
+
 }

@@ -29,4 +29,9 @@ public class TodoDaoImp implements TodoDao {
     public Todo find(int id) {
         return map.get(id);
     }
+
+    @Override
+    public boolean remove(int id) {
+        return map.remove(id) != null;
+    }
 }

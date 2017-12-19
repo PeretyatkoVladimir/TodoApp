@@ -1,3 +1,4 @@
+
 $(document).ready(function () {
 
     function addCloseButtonToListElements() {
@@ -16,22 +17,19 @@ $(document).ready(function () {
     function addListenerToOneCloseButton(el) {
         $(el).click(function (event) {
 
-            $.ajax('/add-todo', {
+            $.ajax('/rem-todo', {
                 method: 'POST',
-                data: JSON.stringify({body: body})
+                data: JSON.stringify({id: $(el).attr("id")})
 
             }).then(function success(data) {
                     if (data) {
-                        console.log('Todo has been added with id ' + data.id);
-                        createNewElement(data.id, data.body);
+                        var div = $(event.target).parent().hide();
+                        console.log("->" + $(el).attr("id"));
                     }
                 }, function fail(data, status) {
                     console.log('Request failed.  Returned status of ' + status);
                 }
             );
-
-            var div = $(event.target).parent().hide();
-            console.log("->" + $(el).attr("id"));
         })
     }
 
