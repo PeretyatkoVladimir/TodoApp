@@ -4,9 +4,6 @@ import ua.artcode.todo.model.Todo;
 
 import java.util.*;
 
-/**
- * Created by serhii on 22.10.17.
- */
 public class TodoDaoImp implements TodoDao {
 
     private Map<Integer, Todo> map;

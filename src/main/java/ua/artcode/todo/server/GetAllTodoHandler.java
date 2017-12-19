@@ -10,15 +10,15 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.util.List;
 
-public class AddTodoHandler extends AbstractHandler {
+public class GetAllTodoHandler extends AbstractHandler {
 
     private MainService mainService;
     private Gson gson;
 
-    public AddTodoHandler(MainService mainService, Gson gson) {
+    public GetAllTodoHandler(MainService mainService, Gson gson) {
         this.mainService = mainService;
         this.gson = gson;
     }
@@ -28,21 +28,12 @@ public class AddTodoHandler extends AbstractHandler {
                        HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {
 
-        response.setContentType("application/json; charset=utf-8");
-        response.setStatus(HttpServletResponse.SC_CREATED);
-
-        Todo todo = gson.fromJson(new InputStreamReader(request.getInputStream()), Todo.class);
-
-        Todo ret = mainService.create(todo);
+        List<Todo> todos = mainService.getAll();
 
         PrintWriter out = response.getWriter();
-
-        out.println(gson.toJson(ret));
-
+        out.println(gson.toJson(todos));
         out.flush();
 
-        // todo
         baseRequest.setHandled(true);
-
     }
 }

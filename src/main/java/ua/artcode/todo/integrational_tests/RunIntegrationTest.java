@@ -9,9 +9,6 @@ import org.junit.Test;
 import ua.artcode.todo.model.Todo;
 import ua.artcode.todo.utils.JsonUtils;
 
-/**
- * Created by serhii on 22.10.17.
- */
 public class RunIntegrationTest {
 
 
