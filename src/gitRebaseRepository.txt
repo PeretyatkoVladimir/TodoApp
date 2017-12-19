@@ -1,0 +1,5 @@
+git fetch origin
+git remote add new-origin https://github.com/PeretyatkoVladimir/TodoApp.git
+git push --mirror new-origin
+git remote rm origin
+git remote rename new-origin origin
