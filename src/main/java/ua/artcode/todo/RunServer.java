@@ -20,12 +20,7 @@ public class RunServer {
         Gson gson = new Gson();
         MainService mainService = new MainServiceImpl(new TodoDaoImp());
 
-        String SERVER_PORT = System.getenv("PORT");
-        if(SERVER_PORT == null){
-            SERVER_PORT = "5000";
-        }
-
-        Server server = new Server(Integer.parseInt(SERVER_PORT));
+        Server server = new Server(getServerPort());
 
         server.setRequestLog(
                 (request, response) ->
@@ -44,6 +39,15 @@ public class RunServer {
 
         server.start();
         server.join();
+    }
+
+    static private int getServerPort(){
+
+        String SERVER_PORT = System.getenv("PORT");
+        if(SERVER_PORT == null){
+            SERVER_PORT = "5000";
+        }
+        return Integer.parseInt(SERVER_PORT);
     }
 
     static private ResourceHandler createResourceHandler(String resourcePath, String welcomeFile){

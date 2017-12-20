@@ -23,7 +23,7 @@ $(document).ready(function () {
 
             }).then(function success(data) {
                     if (data) {
-                        var div = $(event.target).parent().hide();
+                        $(event.target).parent().hide();
                         console.log("->" + $(el).attr("id"));
                     }
                 }, function fail(data, status) {
